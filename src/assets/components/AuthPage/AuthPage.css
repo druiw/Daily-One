@@ -1,0 +1,12 @@
+.auth-page {
+  min-height: 100vh;      /* fills the full screen */
+  width: 100%;
+  background-color: rgb(249,249,249); /* blue (tailwind blue-600 vibe) */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: rgb(0, 0, 0);
+}
