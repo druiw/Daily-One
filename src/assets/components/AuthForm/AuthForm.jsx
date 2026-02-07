@@ -29,7 +29,7 @@ const AuthForm = ({ mode }) => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-5 w-full max-w-md mx-auto bg-white rounded-2xl shadow p-8"
     >
-      <p className="mt-2 text-3xl md:text-base font-light text-black">
+      <p className="mt-2 text-xl md:text-lg font-medium text-black">
         {isLogin ? "Welcome back" : "Create your journal"}
       </p>
 
