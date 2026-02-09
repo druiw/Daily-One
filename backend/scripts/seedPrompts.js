@@ -1,16 +1,49 @@
 // Seed prompts into MongoDB
-import mongoose from "mongoose";
+const Prompt = require("../models/Prompt");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const promptSchema = new Schema(
-  {
-    text: { type: String, required: true, trim: true },
-    category: { type: String, default: "general" },
-    active: { type: Boolean, default: true },
-  },
-  { timestamps: true },
-);
+const dns = require("node:dns");
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-// Prevent duplicate questions if we choose to add more later and re-run the script
-promptSchema.index({ text: 1 }, { unique: true });
+// Prompts/Questions to send to the database.
+// This is the main function of the app.
+// Presenting these prompts to the user.
+const prompts = [
+  { text: "What are you avoiding right now, and why?", category: "reflection" },
+  { text: "What made you feel proud today?", category: "confidence" },
+  { text: "What do you need more of in your life?", category: "growth" },
+  { text: "What drained your energy today?", category: "wellbeing" },
+];
 
-export default mongoose.model("Prompt", promptSchema);
+const MONGO_URI = process.env.MONGO_URI;
+
+async function seedPrompts() {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("Connected to MongoDB");
+
+    let inserted = 0;
+    for (const p of prompts) {
+      try {
+        await Prompt.create(p);
+        inserted++;
+      } catch (error) {
+        if (error.code === 11000) {
+          console.log("Duplicate prompt found: Skipping prompt...");
+          continue;
+        }
+        throw error;
+      }
+    }
+
+    console.log(`Seeding complete. Inserted ${inserted} prompts`);
+    await mongoose.disconnect();
+    process.exit(0);
+  } catch (error) {
+    console.error("Seeding error: ", error);
+    process.exit(1);
+  }
+}
+
+seedPrompts();

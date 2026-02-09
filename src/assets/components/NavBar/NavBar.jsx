@@ -13,6 +13,7 @@ const NavBar = () => {
     <nav className="flex items-center justify-between shadow px-6 h-16 bg-white">
       {/* Left Items */}
       <div class="flex-1"></div>
+
       {/* Center Items */}
       <div className="absolute left-1/2 -translate-x-1/2">
         <p className="font-thin text-2xl">One Question a Day</p>

@@ -1,5 +1,6 @@
 // Prompt Schema
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const promptSchema = new Schema(
   {
@@ -13,4 +14,4 @@ const promptSchema = new Schema(
 // Prevent duplicate questions if we choose to add more later and re-run the script
 promptSchema.index({ text: 1 }, { unique: true });
 
-export default mongoose.model("Prompt", promptSchema);
+module.exports = mongoose.model("Prompt", promptSchema);
