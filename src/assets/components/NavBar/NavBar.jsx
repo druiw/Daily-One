@@ -10,9 +10,9 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="flex items-center justify-between shadow px-6 h-16 bg-white">
+    <nav className="flex text-center items-center justify-between shadow px-6 h-16 bg-white">
       {/* Left Items */}
-      <div class="flex-1"></div>
+      <div className="flex-1"></div>
 
       {/* Center Items */}
       <div className="absolute left-1/2 -translate-x-1/2">
