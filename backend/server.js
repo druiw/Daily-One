@@ -1,20 +1,26 @@
 const dns = require("node:dns");
+// Workaround: some networks block MongoDB SRV DNS lookups
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 require("dotenv").config();
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
+
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
+
+const promptsRoutes = require("./routes/prompts");
 
 const app = express();
 
+// middleware
 app.use(cors());
-app.use(express.json()); // read req.body
+app.use(express.json());
+
+// routes
+app.use("/api/prompts", promptsRoutes);
 
 app.get("/", (req, res) => {
-  res.status(200);
-  res.send("Daily One API is running");
+  res.status(200).send("Daily One API is running");
 });
 
 const PORT = process.env.PORT || 5000;
