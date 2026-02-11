@@ -1,5 +1,4 @@
 import React from "react";
-import "./AuthPage.css";
 import AuthForm from "../AuthForm/AuthForm";
 import { useLocation } from "react-router-dom";
 import { Sprout } from "lucide-react";
