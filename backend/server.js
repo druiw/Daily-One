@@ -7,8 +7,9 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
+const bcrypt = require("bcrypt");
 const promptsRoutes = require("./routes/prompts");
+const UserEntry = require("./models/UserEntries");
 
 const app = express();
 
@@ -93,6 +94,37 @@ app.post("/signup", async (req, res) => {
     });
   } catch (err) {
     console.error("Signup error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Listen to post request to /api/entries
+app.post("/api/entries", async (req, res) => {
+  try {
+    // Get the sent data
+    const { userId, prompt, text } = req.body;
+    console.log(text);
+    console.log(prompt);
+    console.log(userId);
+
+    // Validate the data
+    if (!userId || !prompt || !text) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Save entry to DB
+    const newEntry = await UserEntry.create({
+      userId,
+      prompt,
+      text,
+    });
+
+    res.status(201).json({
+      message: "Entry saved successfully",
+      entry: newEntry,
+    });
+  } catch (error) {
+    console.error("Entry save error: ", error);
     res.status(500).json({ message: "Server error" });
   }
 });
