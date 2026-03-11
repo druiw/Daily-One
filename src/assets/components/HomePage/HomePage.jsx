@@ -8,19 +8,46 @@ import StreakCounter from "../StreakCounter/StreakCounter.jsx";
 
 const HomePage = () => {
   const [entry, setEntry] = useState("");
-  const handleSave = () => {
-    if (entry.trim()) {
-      alert("Entry Saved");
-      setEntry("");
+  const [prompt, setPrompt] = useState("");
+
+  const handleSubmit = async () => {
+    const userId = localStorage.getItem("userId");
+
+    if (!entry.trim()) {
+      return;
+    }
+
+    console.log("userId:", userId);
+    console.log("prompt:", prompt);
+    console.log("entry:", entry);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: entry,
+          prompt: prompt,
+          userId: userId,
+        }),
+      });
+
+      const text = await response.text();
+      console.log("Raw server response:", text);
+    } catch (err) {
+      console.error("Error saving entry:", err);
     }
   };
+
   return (
     <div className="min-h-screen flex flex-col gap-6 bg-[rgb(249,249,249)]">
       <NavBar />
       <StreakCounter />
-      <DailyQuestion />
-      <UserEntry entry={entry} setEntry={setEntry} />
-      <SaveEntry onSave={handleSave} />
+      <DailyQuestion prompt={prompt} setPrompt={setPrompt} />
+      <UserEntry entry={entry} setEntry={setEntry} prompt={prompt} />
+      <SaveEntry onSave={handleSubmit} />
     </div>
   );
 };
