@@ -11,17 +11,30 @@ const AuthForm = ({ mode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Todo: Prevent user from going to home page with only an email
+    try {
+      const endpoint = isLogin ? "/login" : "/signup";
 
-    navigate("/home");
+      const res = await fetch(`http://localhost:5000${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    //send to backend
-    const endpoint = isLogin ? "/login" : "/signup";
-    const res = await fetch(`http://localhost:5000${endpoint}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+      const data = await res.json();
+      console.log("Auth response:", data);
+
+      if (!res.ok) {
+        alert(data.message || "Something went wrong");
+        return;
+      }
+
+      localStorage.setItem("userId", data.user.id);
+
+      navigate("/home");
+    } catch (error) {
+      console.error("Auth error:", error);
+      alert("Server error");
+    }
   };
 
   return (
