@@ -98,14 +98,43 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // check if user exists
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // compare password with stored hash
+    const validPassword = await bcrypt.compare(password, user.passwordHash);
+
+    if (!validPassword) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // successful login
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user._id,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Login error: ", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Listen to post request to /api/entries
 app.post("/api/entries", async (req, res) => {
   try {
     // Get the sent data
     const { userId, prompt, text } = req.body;
-    console.log(text);
-    console.log(prompt);
-    console.log(userId);
 
     // Validate the data
     if (!userId || !prompt || !text) {
@@ -118,6 +147,8 @@ app.post("/api/entries", async (req, res) => {
       prompt,
       text,
     });
+
+    console.log(`${userId}, stored an entry!`);
 
     res.status(201).json({
       message: "Entry saved successfully",
