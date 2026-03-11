@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const promptsRoutes = require("./routes/prompts");
 const UserEntry = require("./models/UserEntries");
+const Prompt = require("./models/Prompt");
 
 const app = express();
 
@@ -157,5 +158,27 @@ app.post("/api/entries", async (req, res) => {
   } catch (error) {
     console.error("Entry save error: ", error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get a consistent daily prompt
+app.get("/api/prompts/today", async (req, res) => {
+  try {
+    const prompts = await Prompt.find();
+
+    const today = new Date();
+    //console.log(today);
+
+    // convert time to day number
+    const dayNumber = Math.floor(today.getTime() / (1000 * 60 * 60 * 24)); // Divide by milleseconds in a day
+    //console.log(dayNumber);
+
+    const index = dayNumber % prompts.length; //
+    //console.log(index);
+
+    res.json(prompts[index]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching prompt" });
   }
 });
