@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "../NavBar/NavBar.jsx";
 import DailyQuestion from "../DailyQuestion/DailyQuestion.jsx";
 import UserEntry from "../UserEntry/UserEntry.jsx";
@@ -9,6 +9,28 @@ import StreakCounter from "../StreakCounter/StreakCounter.jsx";
 const HomePage = () => {
   const [entry, setEntry] = useState("");
   const [prompt, setPrompt] = useState("");
+
+  // get random prompt from api
+  useEffect(() => {
+    async function getPrompts() {
+      try {
+        const response = await fetch("http://localhost:5000/api/prompts");
+
+        if (!response.ok) {
+          console.log("Could not fetch resource.");
+          return;
+        }
+
+        const data = await response.json();
+        const prompts = data.map((p) => p.text);
+        setPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getPrompts();
+  }, []);
 
   const handleSubmit = async () => {
     const userId = localStorage.getItem("userId");
