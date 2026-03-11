@@ -10,26 +10,25 @@ const HomePage = () => {
   const [entry, setEntry] = useState("");
   const [prompt, setPrompt] = useState("");
 
-  // get random prompt from api
+  // get daily prompt
   useEffect(() => {
-    async function getPrompts() {
+    async function getTodayPrompt() {
       try {
-        const response = await fetch("http://localhost:5000/api/prompts");
+        const response = await fetch("http://localhost:5000/api/prompts/today");
 
         if (!response.ok) {
-          console.log("Could not fetch resource.");
+          console.log("Could not fetch today's prompt.");
           return;
         }
 
         const data = await response.json();
-        const prompts = data.map((p) => p.text);
-        setPrompt(prompts[Math.floor(Math.random() * prompts.length)]);
+        setPrompt(data.text);
       } catch (error) {
         console.log(error);
       }
     }
 
-    getPrompts();
+    getTodayPrompt();
   }, []);
 
   const handleSubmit = async () => {
