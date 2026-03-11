@@ -2,6 +2,27 @@ import React from "react";
 import { useState } from "react";
 
 const UserEntry = ({ entry, setEntry }) => {
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: entry,
+          prompt: prompt,
+          userId: userId,
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Entry saved:", data);
+    } catch (err) {
+      console.error("Error saving entry:", err);
+    }
+  };
+
   const maxChars = 500;
   return (
     <div className="flex flex-col justify-between gap-5 w-full max-w-xl mx-auto bg-white rounded-2xl shadow p-8 min-h-[320px]">
