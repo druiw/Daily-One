@@ -34,7 +34,7 @@ MongoDB Atlas
 Clone the repository and install dependencies
 
 ```
-git clone <repo-url>
+git clone https://github.com/druiw/Daily-One.git
 cd daily-one
 npm install
 ```
