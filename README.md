@@ -66,16 +66,7 @@ npm run dev
 
 ## Screenshots
 
-Add screenshots of the application here.
+<img width="1900" height="937" alt="image" src="https://github.com/user-attachments/assets/383565f5-0e1c-40bf-8dd4-780339c0a5a0" />
 
-Example:
+<img width="1906" height="940" alt="image" src="https://github.com/user-attachments/assets/8d9b5670-e64c-4c93-836d-51575d39b4dd" />
 
-```
-<img width="1905" height="942" alt="image" src="https://github.com/user-attachments/assets/d0e04235-59db-4ac9-bbb4-2c94b831fc48" />
-
-![Daily Prompt](screenshots/prompt.png)
-
-![Journal Entry](screenshots/editor.png)
-
-![Entry History](screenshots/history.png)
-```
